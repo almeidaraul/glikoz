@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from glikoz.report_creator import (ReportCreator, PDFReportCreator,
+from glikoz.report import (ReportCreator, PDFReportCreator,
                                    JSONReportCreator)
 
 

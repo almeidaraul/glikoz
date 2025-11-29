@@ -84,7 +84,9 @@ class ReportCreator:
         """Compute and store total and mean daily number of entries"""
         if self.df_handler.df.empty:
             entry_count = 0
+            glucose_entry_count = 0
             mean_daily_entry_count = 0.
+            mean_daily_glucose_entry_count = 0.
         else:
             entry_count = self.df_handler.count()
             glucose_entry_count = self.df_handler.df["glucose"].dropna(
@@ -150,17 +152,17 @@ class ReportCreator:
             time_above_range_by_hour_count = glucose[glucose >= upper_bound
                                                      ].groupby(groupby_param
                                                                ).count()
-            for hour, count in time_above_range_by_hour_count.iteritems():
+            for hour, count in time_above_range_by_hour_count.items():
                 time_above_range_by_hour[hour] = count
             time_below_range_by_hour_count = glucose[glucose < lower_bound
                                                      ].groupby(groupby_param
                                                                ).count()
-            for hour, count in time_below_range_by_hour_count.iteritems():
+            for hour, count in time_below_range_by_hour_count.items():
                 time_below_range_by_hour[hour] = count
             time_in_range_by_hour_count = glucose[
                 (glucose >= lower_bound) & (glucose < upper_bound)
                 ].groupby(groupby_param).count()
-            for hour, count in time_in_range_by_hour_count.iteritems():
+            for hour, count in time_in_range_by_hour_count.items():
                 time_in_range_by_hour[hour] = count
         self.store("time_above_range_by_hour", time_above_range_by_hour)
         self.store("time_below_range_by_hour", time_below_range_by_hour)
