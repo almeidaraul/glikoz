@@ -32,55 +32,43 @@
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-**Glikoz** is built using Python3. Install dependencies from `src/requirements.txt`:
+**Glikoz** is built using Python 3.13+ and uses [uv](https://docs.astral.sh/uv/) for dependency management.
 
+Install uv if you don't have it:
 ```bash
-pip3 install -r requirements.txt
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Installing
-Install **glikoz** with pip so it can be used from anywhere in your machine:
-
+Install the project dependencies:
 ```bash
-pip3 install -e .
-```
-
-And then use its modules in your own program:
-```python
-from glikoz import DiaguardCSVParser
-
-csv = open("diaguard_export.csv", 'r')
-parser = DiaguardCSVParser()
-df = parser.parse_csv(csv)
-
-print(df.describe())
+uv sync
 ```
 
 ## 🔧 Running the tests <a name = "tests"></a>
-Automated tests are implemented with PyTest. After installing project requirements, run `pytest` from the `src` directory.
+Automated tests are implemented with PyTest. Run tests with:
 
-## 🎈 Usage <a name="usage"></a>
-Using **glikoz** is as simple as instantiating a `ReportCreator` object with some input CSV (exported from Diaguard) and creating a report with it:
-
-```python
-import sys
-from glikoz import DiaguardCSVParser, DataFrameHandler, PDFReportCreator
-
-# parse a CSV into a pandas DataFrame
-parser = DiaguardCSVParser()
-csv_source = sys.stdin
-df = parser.parse_csv(csv_source)
-df_handler = DataFrameHandler(df)
-# initialize report creator
-report_creator = PDFReportCreator(df_handler)
-report_creator.fill_report()
-
-# create report and save it to report.pdf
-output = open("report.pdf", "wb")
-report_creator.create_report(target=output)
+```bash
+uv run pytest
 ```
 
-You can also run the `get_report` script with the input coming from STDIN, e.g.,
+## 🎈 Usage <a name="usage"></a>
+Generate a LaTeX report from a CSV file containing glucose and insulin data:
+
 ```bash
-cat diaguard_export.csv | python3 get_report --format pdf  # reports to output.pdf
+uv run python main.py input.csv output.tex
+```
+
+The CSV file should have the following columns:
+- `date`: timestamp in format "YYYY-MM-DD HH:MM"
+- `glucose`: glucose reading in mg/dL
+- `fast_insulin`: fast-acting insulin dose
+- `basal_insulin`: basal insulin dose
+- `carbs`: carbohydrate intake in grams
+
+In each row, all columns except for `date` are optional.
+
+After generating the LaTeX file, compile it to PDF:
+
+```bash
+pdflatex output.tex
 ```
