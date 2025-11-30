@@ -12,12 +12,13 @@ def main():
         description="Generate a Glikoz report from a CSV file with glucose and insulin data"
     )
     parser.add_argument(
-        "csv_file",
+        "--csv_file",
         type=Path,
         help="Path to input CSV file with columns date, glucose, fast_insulin, basal_insulin, carbs",
+        required=True
     )
     parser.add_argument(
-        "output_file",
+        "--output_file",
         type=Path,
         help="Path to the output LaTeX file",
         default=Path('./glikoz_report.tex'),
