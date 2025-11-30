@@ -12,7 +12,7 @@ class Report(ABC):
         pass
 
 
-class LateXReport(Report):
+class TypstReport(Report):
     def __init__(self, summary: Summary):
         self.summary = summary
 
