@@ -202,9 +202,9 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
 \maketitle
 \textbf{HbA1c:} 7.20
 
-\textbf{Entry Count:} 5
+\textbf{Entry Count:} 3
 
-\textbf{Glucose Entry Count:} 3
+\textbf{Glucose Entry Count:} 2
 
 \textbf{Mean Daily Glucose Entry Rate:} 1.00
 
@@ -212,12 +212,12 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
 
 \textbf{Total Very Low Count:} 0.00
 
-\textbf{Mean Daily Fast Insulin Intake:} 3.33
+\textbf{Mean Daily Fast Insulin Intake:} 2.50
 
 \subsection*{Time in Range}
 \begin{center}
 \begin{tikzpicture}
-\pie[color={green,red}]{66.7/In Range,33.3/Above Range}
+\pie[color={green,red}]{50.0/In Range,50.0/Above Range}
 \end{tikzpicture}
 \end{center}
 
@@ -340,7 +340,7 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
     legend style={at={(0.5,-0.15)}, anchor=north},
 ]
 \addplot[mark=*, blue, thick] coordinates {
-    (8,110.0)
+    (8,120.0)
     (18,200.0)
 };
 \addlegendentry{Mean Glucose}

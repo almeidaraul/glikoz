@@ -3,17 +3,27 @@ from collections.abc import Callable
 import pandas as pd
 
 
+def _df_within_last_x_days(df: pd.DataFrame, x: int) -> pd.DataFrame:
+    """Return a DataFrame filtered to only include entries within the most recent `x` days."""
+    most_recent_entry = df["date"].max()
+    delta_days = pd.Timedelta(days=x)
+    return pd.DataFrame(df[df["date"] >= most_recent_entry - delta_days])
+
+
 class Summary:
     """Summary of the provided DataFrame.
 
-    All values are computed based on the entire dataframe, except for the HbA1c, which uses the
+    All values are computed based on the last 15 days, except for the HbA1c, which uses the
     last 3 months.
     """
 
     def __init__(self, df: pd.DataFrame):
-        self.df = df
+        self.df_90_days = _df_within_last_x_days(df, 90)
+        self.df = _df_within_last_x_days(df, 15)
+
         if self.total_entry_count == 0:
             raise ValueError("Summary DataFrame is empty")
+
         self.low_threshold = 70
         self.high_threshold = 180
         self.very_low_threshold = 54
