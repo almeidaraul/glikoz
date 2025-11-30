@@ -21,15 +21,12 @@ def require_file_buffer(func: Callable) -> Callable:
 
 class Report(ABC):
     def __init__(self, summary: Summary):
-        pass
-
-    def write_to_file(self, file_path: Path):
-        pass
+        self.summary = summary
 
 
 class LaTeXReport(Report):
     def __init__(self, summary: Summary):
-        self.summary = summary
+        super().__init__(summary)
         self.file_buffer: TextIO | None = None
 
     def write_to_file(self, file_path: Path):
