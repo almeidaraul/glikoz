@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TextIO
 
@@ -9,12 +9,16 @@ class Report(ABC):
     def __init__(self, summary: Summary):
         self.summary = summary
 
+    @abstractmethod
+    def write_to_file(self, file_path: Path) -> None:
+        pass
+
 
 class LaTeXReport(Report):
     def __init__(self, summary: Summary):
         super().__init__(summary)
 
-    def write_to_file(self, file_path: Path):
+    def write_to_file(self, file_path: Path) -> None:
         with open(file_path, "w+") as f:
             self.write_file_header(f)
 
@@ -59,7 +63,7 @@ class LaTeXReport(Report):
 
             self.write_file_footer(f)
 
-    def write_file_header(self, file_buffer: TextIO):
+    def write_file_header(self, file_buffer: TextIO) -> None:
         header_lines = [
             r"\documentclass[a4paper]{article}",
             r"\usepackage{graphicx}",
@@ -74,14 +78,14 @@ class LaTeXReport(Report):
         ]
         file_buffer.write("\n".join(header_lines))
 
-    def write_file_footer(self, file_buffer: TextIO):
+    def write_file_footer(self, file_buffer: TextIO) -> None:
         file_buffer.write("\n\\end{document}\n")
 
-    def write_number(self, file_buffer: TextIO, label: str, value: float | int):
+    def write_number(self, file_buffer: TextIO, label: str, value: float | int) -> None:
         value_str = str(value) if isinstance(value, int) else f"{value:.2f}"
         file_buffer.write(f"\\textbf{{{label}:}} {value_str}\n\n")
 
-    def write_pie_chart(self, file_buffer: TextIO, title: str, *values: float):
+    def write_pie_chart(self, file_buffer: TextIO, title: str, *values: float) -> None:
         file_buffer.write(f"\\subsection*{{{title}}}\n")
         file_buffer.write("\\begin{center}\n")
         file_buffer.write("\\begin{tikzpicture}\n")
@@ -92,7 +96,7 @@ class LaTeXReport(Report):
         # Filter out zero values
         pie_parts = []
         colors = []
-        for v, label, color in zip(values, all_labels, all_colors):
+        for v, label, color in zip(values, all_labels, all_colors, strict=True):
             if v > 0.0:
                 percentage = f"{v * 100:.1f}"
                 pie_parts.append(f"{percentage}/{label}")
@@ -110,7 +114,7 @@ class LaTeXReport(Report):
         title: str,
         horizontal_axis: list[str] | list[int],
         *bars: list[float],
-    ):
+    ) -> None:
         file_buffer.write(f"\\subsection*{{{title}}}\n")
         file_buffer.write("\\begin{center}\n")
         file_buffer.write("\\begin{tikzpicture}\n")
@@ -149,7 +153,7 @@ class LaTeXReport(Report):
 
     def write_line_graph(
         self, file_buffer: TextIO, title: str, x_axis: list[str] | list[int], y_axis: list[float]
-    ):
+    ) -> None:
         file_buffer.write(f"\\subsection*{{{title}}}\n")
         file_buffer.write("\\begin{center}\n")
         file_buffer.write("\\begin{tikzpicture}\n")

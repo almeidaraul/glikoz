@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      # --frozen ensures the lockfile is not updated during CI (fails if out of sync).
+      - name: Install dependencies
+        run: uv sync --all-extras --dev --frozen
+
+      - name: Lint with Ruff
+        run: uv run ruff check
+
+      - name: Check formatting with Ruff
+        run: uv run ruff format --check
+
+      - name: Type check with Mypy
+        run: uv run mypy .
+
+      - name: Run tests with Pytest
+        run: uv run pytest

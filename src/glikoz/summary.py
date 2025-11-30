@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 import pandas as pd
 
 
@@ -87,7 +89,9 @@ class Summary:
     def hourly_groups(self) -> pd.core.groupby.DataFrameGroupBy:
         return self.df.groupby(self.df["date"].dt.hour)
 
-    def calculate_hourly_percentage_of_glucose_with_filter(self, filter_fn) -> list[float]:
+    def calculate_hourly_percentage_of_glucose_with_filter(
+        self, filter_fn: Callable[[pd.Series], pd.Series]
+    ) -> list[float]:
         hourly_glucose = self.hourly_groups["glucose"]
         time_in_range_rates = [0.0] * 24
         for hour in range(24):
