@@ -76,10 +76,10 @@ class TestSummaryOnShortDataFrameSpanning6Months:
         assert self.summary.hba1c == (160 + 46.7) / 28.7
 
     def test_total_entry_count(self):
-        assert self.summary.total_entry_count == 5
+        assert self.summary.total_entry_count == 3
 
     def test_total_glucose_entry_count(self):
-        assert self.summary.total_glucose_entry_count == 3
+        assert self.summary.total_glucose_entry_count == 2
 
     def test_mean_daily_glucose_entry_rate(self):
         assert self.summary.mean_daily_glucose_entry_rate == 1.0
@@ -91,16 +91,16 @@ class TestSummaryOnShortDataFrameSpanning6Months:
         assert self.summary.total_very_low_count == 0
 
     def test_mean_fast_insulin_per_day(self):
-        assert self.summary.mean_fast_insulin_per_day == 10 / 3
+        assert self.summary.mean_fast_insulin_per_day == 5 / 2
 
     def test_time_in_range(self):
-        assert self.summary.time_in_range == 2 / 3
+        assert self.summary.time_in_range == 1 / 2
 
     def test_time_below_range(self):
         assert self.summary.time_below_range == 0.0
 
     def test_time_above_range(self):
-        assert self.summary.time_above_range == 1 / 3
+        assert self.summary.time_above_range == 1 / 2
 
     def test_time_in_range_by_hour(self):
         expected = [0.0] * 24
@@ -118,6 +118,6 @@ class TestSummaryOnShortDataFrameSpanning6Months:
 
     def test_mean_glucose_by_hour(self):
         expected = [0.0] * 24
-        expected[8] = 110.0
+        expected[8] = 120.0
         expected[18] = 200.0
         assert self.summary.mean_glucose_by_hour == expected
