@@ -87,7 +87,7 @@ class Summary:
     def hourly_groups(self) -> pd.core.groupby.DataFrameGroupBy:
         return self.df.groupby(self.df["date"].dt.hour)
 
-    def time_in_range_by_hour_from_filter(self, filter_fn) -> list[float]:
+    def calculate_hourly_percentage_of_glucose_with_filter(self, filter_fn) -> list[float]:
         hourly_glucose = self.hourly_groups["glucose"]
         time_in_range_rates = [0.0] * 24
         for hour in range(24):
@@ -100,7 +100,7 @@ class Summary:
 
     @property
     def time_in_range_by_hour(self) -> list[float]:
-        return self.time_in_range_by_hour_from_filter(
+        return self.calculate_hourly_percentage_of_glucose_with_filter(
             lambda glucose_values: glucose_values.between(
                 self.low_threshold, self.high_threshold, inclusive="left"
             )
@@ -108,13 +108,13 @@ class Summary:
 
     @property
     def time_below_range_by_hour(self) -> list[float]:
-        return self.time_in_range_by_hour_from_filter(
+        return self.calculate_hourly_percentage_of_glucose_with_filter(
             lambda glucose_values: glucose_values.lt(self.low_threshold)
         )
 
     @property
     def time_above_range_by_hour(self) -> list[float]:
-        return self.time_in_range_by_hour_from_filter(
+        return self.calculate_hourly_percentage_of_glucose_with_filter(
             lambda glucose_values: glucose_values.ge(self.high_threshold)
         )
 
