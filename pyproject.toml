@@ -22,8 +22,8 @@ dev = [
     "pytest>=7.3.1",
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest>=7.3.1",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
@@ -32,15 +32,35 @@ dev-dependencies = [
 
 [tool.ruff]
 line-length = 100
+indent-width = 4
 target-version = "py313"
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "env",
+    "venv",
+]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "W"]
+select = ["E", "F", "I", "B", "N", "W", "UP"]
 ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 
 [tool.mypy]
 python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
+disallow_incomplete_defs = true
 check_untyped_defs = true
+show_error_codes = true
+pretty = true
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = ["src/tests"]
