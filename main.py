@@ -28,7 +28,15 @@ def main():
     args = parser.parse_args()
 
     # Read CSV file
+    # Try reading with header first, if 'date' column doesn't exist, assume no header
     df = pd.read_csv(args.csv_file)
+    if "date" not in df.columns:
+        # No header in CSV, specify column names
+        df = pd.read_csv(
+            args.csv_file,
+            names=["date", "glucose", "fast_insulin", "basal_insulin", "carbs"],
+            header=None,
+        )
     df["date"] = pd.to_datetime(df["date"])
 
     # Create summary from DataFrame
