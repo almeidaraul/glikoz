@@ -88,11 +88,11 @@ class Summary:
         return self.df.groupby(self.df["date"].dt.hour)
 
     def time_in_range_by_hour_from_filter(self, filter_fn) -> list[float]:
-        hourly_groups = self.hourly_groups["glucose"]
+        hourly_glucose = self.hourly_groups["glucose"]
         time_in_range_rates = [0.0] * 24
         for hour in range(24):
-            if hour in hourly_groups.groups:
-                glucose_values = hourly_groups.get_group(hour).dropna()
+            if hour in hourly_glucose.groups:
+                glucose_values = hourly_glucose.get_group(hour).dropna()
                 if len(glucose_values) > 0:
                     in_range = filter_fn(glucose_values).sum()
                     time_in_range_rates[hour] = in_range / len(glucose_values)
@@ -120,11 +120,11 @@ class Summary:
 
     @property
     def mean_glucose_by_hour(self) -> list[float]:
-        hourly_groups = self.hourly_groups["glucose"]
+        hourly_glucose = self.hourly_groups["glucose"]
         mean_glucose = [0.0] * 24
         for hour in range(24):
-            if hour in self.hourly_groups.groups:
-                glucose_values = hourly_groups.get_group(hour).dropna()
+            if hour in hourly_glucose.groups:
+                glucose_values = hourly_glucose.get_group(hour).dropna()
                 if len(glucose_values) > 0:
                     mean_glucose[hour] = glucose_values.mean()
         return mean_glucose

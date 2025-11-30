@@ -9,19 +9,20 @@ from glikoz.summary import Summary
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate a Glikoz report from a CSV file with glucose and insulin data"
+        description="Generate a Glikoz report from a CSV file with glucose and insulin data. "
+        "CSV file should contain columns: date, glucose, fast_insulin, basal_insulin, carbs"
     )
     parser.add_argument(
         "--csv_file",
         type=Path,
-        help="Path to input CSV file with columns date, glucose, fast_insulin, basal_insulin, carbs",
-        required=True
+        help="Path to input CSV file",
+        required=True,
     )
     parser.add_argument(
         "--output_file",
         type=Path,
         help="Path to the output LaTeX file",
-        default=Path('./glikoz_report.tex'),
+        default=Path("./glikoz_report.tex"),
     )
 
     args = parser.parse_args()

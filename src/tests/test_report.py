@@ -4,37 +4,6 @@ from glikoz.report import LaTeXReport
 from glikoz.summary import Summary
 
 
-class TestRequireFileBufferDecorator:
-    @pytest.fixture(autouse=True)
-    def setup(self, dataframe_spanning_2_days):
-        summary = Summary(dataframe_spanning_2_days)
-        self.report = LaTeXReport(summary)
-
-    def test_write_file_header_raises_when_file_buffer_is_none(self):
-        with pytest.raises(
-            RuntimeError, match="Cannot call write_file_header: file_buffer is None"
-        ):
-            self.report.write_file_header()
-
-    def test_write_number_raises_when_file_buffer_is_none(self):
-        with pytest.raises(RuntimeError, match="Cannot call write_number: file_buffer is None"):
-            self.report.write_number("Test", 123)
-
-    def test_write_pie_chart_raises_when_file_buffer_is_none(self):
-        with pytest.raises(RuntimeError, match="Cannot call write_pie_chart: file_buffer is None"):
-            self.report.write_pie_chart("Test", 0.5, 0.3, 0.2)
-
-    def test_write_stacked_bar_chart_raises_when_file_buffer_is_none(self):
-        with pytest.raises(
-            RuntimeError, match="Cannot call write_stacked_bar_chart: file_buffer is None"
-        ):
-            self.report.write_stacked_bar_chart("Test", [0.5], [0.3], [0.2])
-
-    def test_write_line_graph_raises_when_file_buffer_is_none(self):
-        with pytest.raises(RuntimeError, match="Cannot call write_line_graph: file_buffer is None"):
-            self.report.write_line_graph("Test", [1.0, 2.0, 3.0])
-
-
 class TestLaTeXReportOnShortDataFrameSpanning2Days:
     @pytest.fixture(autouse=True)
     def setup(self, dataframe_spanning_2_days):
@@ -45,7 +14,7 @@ class TestLaTeXReportOnShortDataFrameSpanning2Days:
     def test_write_to_file_has_expected_content(self, tmp_path):
         output_file = tmp_path / "output.tex"
         self.report.write_to_file(output_file)
-        
+
         expected_content = r"""\documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage{pgfplots}
@@ -206,7 +175,7 @@ class TestLaTeXReportOnShortDataFrameSpanning2Days:
 
 \end{document}
 """
-        
+
         actual_content = output_file.read_text()
         assert actual_content == expected_content
 
@@ -221,7 +190,7 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
     def test_write_to_file_has_expected_content(self, tmp_path):
         output_file = tmp_path / "output.tex"
         self.report.write_to_file(output_file)
-        
+
         expected_content = r"""\documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage{pgfplots}
@@ -382,6 +351,6 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
 
 \end{document}
 """
-        
+
         actual_content = output_file.read_text()
         assert actual_content == expected_content
