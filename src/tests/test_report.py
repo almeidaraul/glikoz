@@ -45,6 +45,7 @@ class TestLaTeXReportOnShortDataFrameSpanning2Days:
 \end{tikzpicture}
 \end{center}
 
+\newpage
 \subsection*{Time in Range by Hour}
 \begin{center}
 \begin{tikzpicture}
@@ -221,6 +222,7 @@ class TestLaTeXReportOnShortDataFrameSpanning6Months:
 \end{tikzpicture}
 \end{center}
 
+\newpage
 \subsection*{Time in Range by Hour}
 \begin{center}
 \begin{tikzpicture}
