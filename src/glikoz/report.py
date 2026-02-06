@@ -48,6 +48,8 @@ class LaTeXReport(Report):
 
             hours_as_strings = list(map(lambda x: f"{x:02}", range(24)))
 
+            self.break_page(f)
+
             self.write_stacked_bar_chart(
                 f,
                 "Time in Range by Hour",
@@ -77,6 +79,9 @@ class LaTeXReport(Report):
             "",
         ]
         file_buffer.write("\n".join(header_lines))
+
+    def break_page(self, file_buffer: TextIO) -> None:
+        file_buffer.write("\\newpage\n")
 
     def write_file_footer(self, file_buffer: TextIO) -> None:
         file_buffer.write("\n\\end{document}\n")
